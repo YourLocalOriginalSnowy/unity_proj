@@ -34,6 +34,7 @@ public class Inventory_UI : MonoBehaviour
         {
             for(int i = 0; i < slots.Count; i++)
             {
+                //if(player.inventory.slots[i].count > 0)
                 if(player.inventory.slots[i].type != CollectableType.NONE)
                 {
                     slots[i].SetItem(player.inventory.slots[i]);
@@ -46,16 +47,33 @@ public class Inventory_UI : MonoBehaviour
         }
     }
 
+    //public void Remove(int slotID)
+    //{
+        //Collectable itemToDrop = GameManager.instance.itemManager.GetItemByType(
+            //player.inventory.slots[slotID].type);
+
+        //if (itemToDrop != null)
+        //{
+            //player.DropItem(itemToDrop);
+            //player.inventory.Remove(slotID);
+            //Refresh();
+        //}
+
+    //}
     public void Remove(int slotID)
     {
         Collectable itemToDrop = GameManager.instance.itemManager.GetItemByType(
-            player.inventory.slots[slotID].type);
+         player.inventory.slots[slotID].type);
 
         if (itemToDrop != null)
         {
-            player.DropItem(itemToDrop);
-            player.inventory.Remove(slotID);
-            Refresh();
+            bool dropSuccessful = player.DropItem(itemToDrop);
+            if (dropSuccessful)
+            {
+                player.inventory.Remove(slotID);
+                Refresh();
+            }
+            // Don't remove from inventory or refresh if drop failed
         }
     }
 }

@@ -48,6 +48,15 @@ public class Inventory
                     type = CollectableType.NONE;
                     icon = null;
                 }
+                 else
+                {
+                    // Re-fetch the persistent sprite to ensure the reference is valid.
+                    Collectable persistentItem = GameManager.instance.itemManager.GetItemByType(type);
+                    if(persistentItem != null)
+                    {
+                        icon = persistentItem.icon;
+                    }
+                }
             }
         }
    }
@@ -65,6 +74,9 @@ public class Inventory
 
    public void Add(Collectable item)
    {
+        // Retrieve the persistent collectible reference (which holds the proper sprite)
+        Collectable persistentItem = GameManager.instance.itemManager.GetItemByType(item.type);
+        
         foreach(Slot slot in slots)
         {
             if(slot.type == item.type && slot.CanAddItem())
